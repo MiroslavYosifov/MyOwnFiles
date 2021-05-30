@@ -46,8 +46,8 @@ function generateRandomPropertiesOfElements(ballsElements) {
         const ballElementInfo = getElementPosition(ballElement);
         
         ballElementInfo.element = ballElement;
-        ballElementInfo.speedX = getRandomArbitrary(4,6);
-        ballElementInfo.speedY = getRandomArbitrary(4,6);
+        ballElementInfo.speedX = getRandomArbitrary(8,10);
+        ballElementInfo.speedY = getRandomArbitrary(8,10);
         ballElementInfo.locationX = 0;
         ballElementInfo.locationY = 0;
         ballElementInfo.scale = getRandomArbitraryDecimal(0.7, 1.4);;
@@ -57,6 +57,13 @@ function generateRandomPropertiesOfElements(ballsElements) {
     }
 
     return array;
+}
+
+function resetElementPostion(dataBalls) {
+    for (const ball of dataBalls) {
+        ball.element.style.transition = "all .8s";
+        ball.element.style.transform = `translate(0, 0) scale(1)`;
+    }
 }
 
 function changeElementScale (ball) {
@@ -79,7 +86,7 @@ function changeElementDirection(ball, fieldPosition) {
     if(ball.centerY > fieldPosition.bottom) ball.speedY *= -1;
 }
 
-function boucingAnimation() {
+async function boucingAnimation() {
 
     const field = document.getElementById('wrapper');
     const ballsElements = document.querySelectorAll('.media');
@@ -87,7 +94,10 @@ function boucingAnimation() {
     const fieldPosition = getElementPosition(field);
     const dataBalls = generateRandomPropertiesOfElements(ballsElements);
     
-    setInterval(() => {
+    let isTimeOver = false;
+    
+    let bouncing = setInterval(() => {
+
         for (const ball of dataBalls) {
 
             moveElement(ball);
@@ -96,22 +106,20 @@ function boucingAnimation() {
             
             ball.element.style.transform = `translate(${ball.locationX}px, ${ball.locationY}px) scale(${ball.scale})`;
         }
+
+        if(isTimeOver) {
+            clearInterval(bouncing) 
+            resetElementPostion(dataBalls);
+        };
+
     }, 10);
+
+    isTimeOver = await isSetTimeoutExpire(4000);
 
 }
 
 function solve() {
     boucingAnimation();
 }
-solve();
 
-// dataBalls.sort((a, b) => (a.scale > b.scale) ? 1 : -1);
-        
-// for (let i = 0; i < dataBalls.length; i++) {
-//     for (let z = 0; z < dataBalls.length; z++) {
-//         if(Math.abs(dataBalls[i].scale - dataBalls[z].scale) > 0.3) {
-//             dataBalls[i].element.style.zIndex = `${i + 1}`;
-//         } 
-//     }
-//     //dataBalls[index].element.style.zIndex = `${index + 1}`;
-// }
+solve();
