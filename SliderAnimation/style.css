@@ -1,7 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
-$slider-height: 300px;
-
 * {
   box-sizing: border-box;
 }
@@ -38,7 +36,7 @@ body {
   display: flex;
   position: relative;
   top: 0;
-  left: -400px;
+  left: 0;
   width: 10000px;
 }
 
@@ -63,13 +61,11 @@ body {
   
 }
 
-.slider.loaded  .slide:nth-child(2),
-.slider.loaded  .slider.loadedslide:nth-child(7) {
+.slider.loaded  .slide:nth-child(1) {
     background: #ffcf47;
   }
 
-.slider.loaded  .slide:nth-child(1),
-.slider.loaded  .slide:nth-child(6) {
+.slider.loaded  .slide:nth-child(2) {
     background: #7adcef;
 }
 

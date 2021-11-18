@@ -8,44 +8,47 @@ function slide(wrapper, items, prev, next) {
       slides = items.getElementsByClassName('slide'),
       slidesLength = slides.length,
       slideSize = items.getElementsByClassName('slide')[0].offsetWidth,
-      firstSlide = slides[0],
-      lastSlide = slides[slidesLength - 1],
-      cloneFirst = firstSlide.cloneNode(true),
-      cloneLast = lastSlide.cloneNode(true),
       index = 0,
       allowShift = true;
   
   // Clone first and last slide
-  items.appendChild(cloneFirst);
-  items.insertBefore(cloneLast, firstSlide);
+  // items.appendChild(cloneFirst);
+  // items.insertBefore(cloneLast, firstSlide);
   wrapper.classList.add('loaded');
   
   // Click events
   prev.addEventListener('click', function () { shiftSlide(-1) });
   next.addEventListener('click', function () { shiftSlide(1) });
-  
+
   // Transition events
   items.addEventListener('transitionend', checkIndex);
   
   function shiftSlide(dir, action) {
     items.classList.add('shifting');
     
-    if (allowShift) {
-  
+    // if(index < 0 || index > (slidesLength.length - 1)) return;
+    console.log(index);
+
+    if (allowShift) { 
       if (!action) { 
         posInitial = items.offsetLeft; 
       }
-
-      if (dir == 1) {
+      if (dir == 1 && index < (slidesLength - 1)) {
         items.style.left = (posInitial - slideSize) + "px";
         index++;      
-      } else if (dir == -1) {
+      } else if (dir == -1 && index > 0) {
         items.style.left = (posInitial + slideSize) + "px";
         index--;      
       }
-    };
-    
-    allowShift = false;
+    }
+
+    if(index == 0 || index == (slidesLength - 1)) {
+      allowShift = true;
+    } else {
+      allowShift = false;
+    }
+   
+
   }
     
   function checkIndex (){
